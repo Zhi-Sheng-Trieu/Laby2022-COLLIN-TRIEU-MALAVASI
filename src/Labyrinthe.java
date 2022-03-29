@@ -40,8 +40,8 @@ public class Labyrinthe {
             val[0] = x;
             val[1] = y + 1;
         } else if (direction.equals(GAUCHE)) {
-            val[0] = x - 1;
-            val[1] = y;
+            val[0] = x;
+            val[1] = y-1;
         } else if (direction.equals(HAUT)) {
             val[0] = x - 1;
             val[1] = y;
@@ -56,15 +56,18 @@ public class Labyrinthe {
     }
 
 
-    void deplacerPerso(String action) {
+    public void deplacerPerso(String action) {
 
         int y = this.personnage.getY();
         int x = this.personnage.getX();
         int[] val = getSuivant(x, y, action);
 
-        if (getChar(x, y) == VIDE) {
-            this.personnage.setX(val[0]);
-            this.personnage.setY(val[1]);
+        while (getChar(val[0], val[1]) != MUR) {
+            x = val[0];
+            y = val[1];
+            this.personnage.setX(x);
+            this.personnage.setY(y);
+            val = getSuivant(x, y, action);
         }
     }
 
@@ -74,13 +77,10 @@ public class Labyrinthe {
         String tableau = "";
 
         for (int i = 0; i < this.murs.length; i++) {
-
             for (int j = 0; j < this.murs[i].length; j++) {
                 tableau += getChar(i, j);
             }
-
             tableau += "\n";
-
         }
 
         return (tableau);
