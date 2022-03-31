@@ -106,7 +106,7 @@ public class Labyrinthe {
 
             char caractere;
             String ln = fichier.readLine();
-            int i = 0, j = 0;
+            int i = 1, j = 1;
             try {
                 while (ln != null) {
                     caractere = ln.charAt(0);
@@ -140,8 +140,7 @@ public class Labyrinthe {
                 if (this.sortie == null) {
                     throw new FichierIncorrectException("sortie inconnue");
                 }
-            } catch (
-                    IndexOutOfBoundsException e) {
+            } catch (IndexOutOfBoundsException f) {
                 if (i > x) {
                     throw new FichierIncorrectException("nbLignes ne correspond pas");
                 } else if (j > y) {
@@ -149,11 +148,9 @@ public class Labyrinthe {
                 }
             }
 
-        } catch (
-                IOException e) {
+        } catch (IOException e) {
             throw new FichierIncorrectException("Fichier " + nom + " inconnu");
-        } catch (
-                NumberFormatException e) {
+        } catch (NumberFormatException e) {
             throw new FichierIncorrectException("pb num ligne ou colonne");
         }
 

@@ -39,7 +39,7 @@ public class MainLaby {
             }
 
         } catch (FichierIncorrectException e) {
-            System.out.println("Erreur le fichier n'existe pas");
+            System.out.println(e.fillInStackTrace());
         }
     }
 }
