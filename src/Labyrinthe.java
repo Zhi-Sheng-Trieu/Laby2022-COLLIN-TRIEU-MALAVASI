@@ -41,7 +41,7 @@ public class Labyrinthe {
             val[1] = y + 1;
         } else if (direction.equals(GAUCHE)) {
             val[0] = x;
-            val[1] = y-1;
+            val[1] = y - 1;
         } else if (direction.equals(HAUT)) {
             val[0] = x - 1;
             val[1] = y;
@@ -56,18 +56,21 @@ public class Labyrinthe {
     }
 
 
-    public void deplacerPerso(String action) {
-
+    public void deplacerPerso(String action) throws ActionInconnueException {
         int y = this.personnage.getY();
         int x = this.personnage.getX();
         int[] val = getSuivant(x, y, action);
 
-        while (getChar(val[0], val[1]) != MUR) {
-            x = val[0];
-            y = val[1];
-            this.personnage.setX(x);
-            this.personnage.setY(y);
-            val = getSuivant(x, y, action);
+        try {
+            while (getChar(val[0], val[1]) != MUR) {
+                x = val[0];
+                y = val[1];
+                this.personnage.setX(x);
+                this.personnage.setY(y);
+                val = getSuivant(x, y, action);
+            }
+        } catch (NullPointerException e) {
+            throw new ActionInconnueException("Action " + action + " inconnue");
         }
     }
 
@@ -83,7 +86,7 @@ public class Labyrinthe {
             tableau += "\n";
         }
 
-        return (tableau);
+        return tableau;
     }
 
 
@@ -92,39 +95,72 @@ public class Labyrinthe {
     }
 
 
-    public Labyrinthe(String nom) throws IOException {
+    public Labyrinthe(String nom) throws FichierIncorrectException {
+        try {
+            BufferedReader fichier = new BufferedReader(new FileReader(nom));
+            String ligne = fichier.readLine();
+            int x = Integer.parseInt(ligne);
+            ligne = fichier.readLine();
+            int y = Integer.parseInt(ligne);
+            this.murs = new boolean[x][y];
 
-        BufferedReader fichier = new BufferedReader(new FileReader(nom));
-        String ligne = fichier.readLine();
-        int x = Integer.parseInt(ligne);
-        ligne = fichier.readLine();
-        int y = Integer.parseInt(ligne);
-        this.murs = new boolean[x][y];
-
-        char caractere;
-        String ln;
-        for (int i = 0; i < x; i++) {
-            ln = fichier.readLine();
-            for (int j = 0; j < y; j++) {
-                if (ln != null) {
-                    caractere = ln.charAt(j);
-                    if (caractere == SORTIE) {
-                        this.sortie = new Sortie(i, j);
-                    } else if (caractere == MUR) {
-                        this.murs[i][j] = true;
-                    } else if (caractere == PJ) {
-                        this.personnage = new Personnage(i, j);
+            char caractere;
+            String ln = fichier.readLine();
+            int i = 0, j = 0;
+            try {
+                while (ln != null) {
+                    caractere = ln.charAt(0);
+                    while (caractere != '\n') {
+                        if (caractere == SORTIE) {
+                            if (this.sortie != null) {
+                                throw new FichierIncorrectException("Plusieurs sorties");
+                            } else {
+                                this.sortie = new Sortie(i, j);
+                            }
+                        } else if (caractere == MUR) {
+                            this.murs[i][j] = true;
+                        } else if (caractere == PJ) {
+                            if (this.personnage != null) {
+                                throw new FichierIncorrectException("Plusieurs personnages");
+                            } else {
+                                this.personnage = new Personnage(i, j);
+                            }
+                        } else if (caractere != VIDE) {
+                            throw new FichierIncorrectException("caractere inconnu : " + caractere);
+                        }
+                        caractere = ln.charAt(j);
+                        j++;
                     }
+                    ln = fichier.readLine();
+                    i++;
+                }
+                if (this.personnage == null) {
+                    throw new FichierIncorrectException("personnage inconnu");
+                }
+                if (this.sortie == null) {
+                    throw new FichierIncorrectException("sortie inconnue");
+                }
+            } catch (
+                    IndexOutOfBoundsException e) {
+                if (i > x) {
+                    throw new FichierIncorrectException("nbLignes ne correspond pas");
+                } else if (j > y) {
+                    throw new FichierIncorrectException("nbColonnes ne correspond pas");
                 }
             }
 
+        } catch (
+                IOException e) {
+            throw new FichierIncorrectException("Fichier " + nom + " inconnu");
+        } catch (
+                NumberFormatException e) {
+            throw new FichierIncorrectException("pb num ligne ou colonne");
         }
 
     }
 
-    public static Labyrinthe chargerLabyrinthe(String nom) throws IOException {
-        Labyrinthe lab = new Labyrinthe(nom);
-        return (lab);
+    public static Labyrinthe chargerLabyrinthe(String nom) throws FichierIncorrectException {
+        return new Labyrinthe(nom);
     }
 
 
