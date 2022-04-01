@@ -106,46 +106,45 @@ public class Labyrinthe {
 
             char caractere;
             String ln = fichier.readLine();
-            int i = 1, j = 1;
-            try {
-                while (ln != null) {
-                    caractere = ln.charAt(0);
-                    while (caractere != '\n') {
-                        if (caractere == SORTIE) {
-                            if (this.sortie != null) {
-                                throw new FichierIncorrectException("Plusieurs sorties");
-                            } else {
-                                this.sortie = new Sortie(i, j);
-                            }
-                        } else if (caractere == MUR) {
+            int i = 0, j;
+            int nPerso = 0, nSortie = 0;
+            while (ln != null) {
+                j = 0;
+                while (j < ln.length()) {
+                    caractere = ln.charAt(j);
+                    if (caractere == SORTIE) {
+                        this.sortie = new Sortie(i, j);
+                        nSortie++;
+                    } else if (caractere == MUR) {
+                        try {
                             this.murs[i][j] = true;
-                        } else if (caractere == PJ) {
-                            if (this.personnage != null) {
-                                throw new FichierIncorrectException("Plusieurs personnages");
-                            } else {
-                                this.personnage = new Personnage(i, j);
+                        } catch (IndexOutOfBoundsException e) {
+                            if (i > x) {
+                                throw new FichierIncorrectException("nbLignes ne correspond pas");
+                            } else if (j > y) {
+                                throw new FichierIncorrectException("nbColonnes ne correspond pas");
                             }
-                        } else if (caractere != VIDE) {
-                            throw new FichierIncorrectException("caractere inconnu : " + caractere);
                         }
-                        caractere = ln.charAt(j);
-                        j++;
+                    } else if (caractere == PJ) {
+                        this.personnage = new Personnage(i, j);
+                        nPerso++;
+                    } else if (caractere != VIDE) {
+                        throw new FichierIncorrectException("caractere inconnu : " + caractere);
                     }
-                    ln = fichier.readLine();
-                    i++;
+                    j++;
                 }
-                if (this.personnage == null) {
-                    throw new FichierIncorrectException("personnage inconnu");
-                }
-                if (this.sortie == null) {
-                    throw new FichierIncorrectException("sortie inconnue");
-                }
-            } catch (IndexOutOfBoundsException f) {
-                if (i > x) {
-                    throw new FichierIncorrectException("nbLignes ne correspond pas");
-                } else if (j > y) {
-                    throw new FichierIncorrectException("nbColonnes ne correspond pas");
-                }
+                ln = fichier.readLine();
+                i++;
+            }
+            if (nPerso == 0) {
+                throw new FichierIncorrectException("personnage inconnu");
+            } else if (nPerso > 1) {
+                throw new FichierIncorrectException("plusieurs personnages");
+            }
+            if (nSortie == 0) {
+                throw new FichierIncorrectException("sortie inconnue");
+            } else if (nSortie > 1) {
+                throw new FichierIncorrectException("plusieurs sorties");
             }
 
         } catch (IOException e) {
