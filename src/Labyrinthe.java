@@ -96,6 +96,7 @@ public class Labyrinthe {
 
 
     public Labyrinthe(String nom) throws FichierIncorrectException {
+        //on essaye de lire le fichier et le nombre de lignes et de colonnes
         try {
             BufferedReader fichier = new BufferedReader(new FileReader(nom));
             String ligne = fichier.readLine();
@@ -104,9 +105,13 @@ public class Labyrinthe {
             int y = Integer.parseInt(ligne);
             this.murs = new boolean[x][y];
 
+
             char caractere;
             String ln = fichier.readLine();
-            int i = 0, j;
+            //on parcourt entierement le fichier en utilisant des indices
+            int i = 0;
+            int j;
+            //on initialise les compteurs de personnage et de sortie
             int nPerso = 0, nSortie = 0;
             while (ln != null) {
                 j = 0;
@@ -119,6 +124,7 @@ public class Labyrinthe {
                         try {
                             this.murs[i][j] = true;
                         } catch (IndexOutOfBoundsException e) {
+                            //si jamais on sort du tableau, on lève une exception
                             if (i > x) {
                                 throw new FichierIncorrectException("nbLignes ne correspond pas");
                             } else if (j > y) {
@@ -136,6 +142,8 @@ public class Labyrinthe {
                 ln = fichier.readLine();
                 i++;
             }
+
+            //on gere les cas ou il n'y a aucun personnage ou aucune sortie ou plusieurs personnages ou plusieurs sorties
             if (nPerso == 0) {
                 throw new FichierIncorrectException("personnage inconnu");
             } else if (nPerso > 1) {
@@ -147,9 +155,13 @@ public class Labyrinthe {
                 throw new FichierIncorrectException("plusieurs sorties");
             }
 
+            //on ferme le fichier
+            fichier.close();
         } catch (IOException e) {
+            //on gere l'erreur d'ouverture du fichier
             throw new FichierIncorrectException("Fichier " + nom + " inconnu");
         } catch (NumberFormatException e) {
+            //on gere le mauvais format du nombre de lignes ou de colonnes
             throw new FichierIncorrectException("pb num ligne ou colonne");
         }
 
