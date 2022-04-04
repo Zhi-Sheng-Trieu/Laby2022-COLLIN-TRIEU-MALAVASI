@@ -113,8 +113,10 @@ public class Labyrinthe {
             int j;
             //on initialise les compteurs de personnage et de sortie
             int nPerso = 0, nSortie = 0;
+            //on parcourt le fichier ligne par ligne
             while (ln != null) {
                 j = 0;
+                //on parcourt chaque caractere de la ligne
                 while (j < ln.length()) {
                     caractere = ln.charAt(j);
                     if (caractere == SORTIE) {
