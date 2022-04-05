@@ -85,4 +85,23 @@ class LabyrintheTest {
         assertFalse(l.etreFini());
     }
 
+
+    @Test
+    void toStringGrandLaby() throws FichierIncorrectException {
+        this.l=Labyrinthe.chargerLabyrinthe("laby/laby2.txt");
+        assertEquals(   "XXXXXXXXXXXXXXXXXXXX\n" +
+                                "XX.......X........XX\n" +
+                                "X........X.........X\n" +
+                                "X........X...X.....X\n" +
+                                "X..X.....X.......SXX\n" +
+                                "X......XXX.........X\n" +
+                                "X...X....X.........X\n" +
+                                "X..X..........X....X\n" +
+                                "X.....X..X.........X\n" +
+                                "XX.......XX........X\n" +
+                                "X........X.........X\n" +
+                                "X........X.........X\n" +
+                                "XX...............PXX\n" +
+                                "XXXXXXXXXXXXXXXXXXXX\n", l.toString());
+    }
 }
