@@ -1,2 +1,0 @@
-J'ai essayé d'avancer sur le Labyrinthe.java dans le src
-normalement j'ai réussi une bonne partie, mais il faudrait revoir je suis pas sur à 100%
