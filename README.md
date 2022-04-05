@@ -1,7 +1,7 @@
 #Laby2022-COLLIN-TRIEU-MALAVASI
 
 #un descriptif des difficultés rencontrées au cours du TP
-On a eu des petits problèmes d'organisation pendant ce TP, nous avons donc travaillé pas mal sur l'ordinateur de Zhi-Sheng.
+On a eu des petits problèmes d'organisation pendant ce TP, nous avons donc travaillé pas mal sur l'ordinateur de Zhi-Sheng, par conséquent pas mal de commit ont été effectué sur l'ordinateur de Zhi-Sheng.
 Il y a aussi des difficultés avec la gestion des exceptions, car elles étaient un peu difficiles à placées.
 
 
@@ -29,3 +29,4 @@ Nous avons testé la méthode getSuivant() au lancement du labyrinthe.
 Nous avons testé la méthode deplacerPerso() avec un déplacement vers le haut puis nous avons vérifier sa position dans le labyrinthe.
 Nous avons aussi vérifier la méthode to_String pour vérifier que le labyrinthe est bien affiché.
 Enfin, nous avons vérifier la méthode etreFini, un test ou le personnage est sur la sortie, donc le labyrinthe est fini, et une autre ou le personnage n'est pas sur la sortie et donc le labyrinthe n'est pas terminé.
+Le dernier test que nous avons fait est le test de la méthode toString() avec un grand labyrinthe. Ce test s'appel toSgringGrandLaby, il permet de tester que le toString marche bien même avec un grand labyritnhe.
